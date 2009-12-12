@@ -26,5 +26,5 @@ If the data file does not exist it will be created for you. If it does exist the
 
 Once you have some data in the database, you can generate results with:
 
-    $ clj bin/write.clj /path/to/data.fdb /path/to/results.txt
+    $ clj bin/calc.clj /path/to/data.fdb /path/to/results.txt
 

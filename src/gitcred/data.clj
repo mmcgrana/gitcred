@@ -108,7 +108,6 @@
   "Returns a collection of [from to] vectors corresponding to follow edges
    on the users/follows graph."
   [dba]
-  (println "compiling graph data")
   (embedded/query dba [:select :follows {:only [:from :to]}]))
 
 (defn ensure-indexes
