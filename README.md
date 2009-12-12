@@ -1,4 +1,4 @@
-GitCred attempts to measure the 'cred' of GitHub users. It works by fetching followers data from GitHub pages and then applying the classic PageRank algorithm to the resulting users/followers graph.
+GitCred attempts to measure the 'cred' of GitHub users. It works by fetching followers data from GitHub pages and then applying the classic PageRank algorithm to the resulting users/follows graph.
 
 You can find the results for a recent GitCred computation in `RESULTS.txt`. These values are logarithmically scaled and normalized so that they correspond to the familiar Google PageRank measure.
 
@@ -18,7 +18,7 @@ To run the GitCred calculations yourself, you will need the following dependenci
 * `jung-*.jar` and their associated dependencies: `http://sourceforge.net/projects/jung/files/`
 * `src/` in this distribution
 
-Then to start populating the user/followers graph database, run:
+Then to start populating the user/follows graph database, run:
 
     $ clj bin/fetch.clj /path/to/data.fdb
 
