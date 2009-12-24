@@ -7,15 +7,12 @@ Implementation Notes
 
 GitCred itself is implemented in Clojure. It uses the clojure.contrib.http.agent library to fetch data from the GitHub users API, the FleetDB database to manage and persist this data, and the Jung graph library for PageRank computations.
 
-Reproducing the Results
------------------------
+Building GitCred
+----------------
 
-To run the GitCred calculations yourself, you will need the following dependencies in your classpath:
+To run the GitCred calculations yourself, you will need Clojure, Clojure Contrib, FleetDB and its dependencies, and Jung2 and its dependencies. The easiest way to get these is with Leiningen:
 
-* `clojure.jar` & `clojure-contrib.jar`: recent versions from the masters at `http://github.com/richhickey`
-* `fleetdb.jar`: `http://cloud.github.com/downloads/mmcgrana/fleetdb/fleetdb.jar`
-* `jung-*.jar` and their associated dependencies: `http://sourceforge.net/projects/jung/files/`
-* `src/` in this distribution
+    $ lein deps
 
 Then to start populating the user/follows FleetDB database, run:
 
