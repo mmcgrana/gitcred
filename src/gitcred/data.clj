@@ -35,38 +35,40 @@
 (defn- ensure-user
   "Ensures that we have a user record for the given username."
   [dba user]
-  (when-not (embedded/query dba [:get :users user])
+  (when-not (first (embedded/query dba
+                     ["select" "users" {"where" ["=" "id" user]}]))
     (embedded/query dba
-      [:insert :users {:id user :found_at (System/currentTimeMillis)}])))
+      ["insert" "users" {"id" user "found_at" (System/currentTimeMillis)}])))
 
 (defn- ensure-follow
   "Ensure that we have a follow record for users from to to."
   [dba from to]
   (let [follow-id (str from "->" to)]
-    (when-not (embedded/query dba [:get :follows follow-id])
+    (when-not (first (embedded/query dba
+                       ["select" "follows" {"where" ["=" "id" follow-id]}]))
       (embedded/query dba
-        [:insert :follows {:id follow-id :from from :to to}]))))
+        ["insert" "follows" {"id" follow-id "from" from "to" to}]))))
 
 (defn- count-unfetched-users
   "Returns the number of users that have not yet been fetched."
   [dba]
-  (embedded/query dba [:count :users {:where [:= :fetched_at nil]}]))
+  (embedded/query dba ["count" "users" {"where" ["=" "fetched_at" nil]}]))
 
 (defn- next-user
   "Returns the next user for which we should fetch."
   [dba]
   (first (embedded/query dba
-           [:select :users {:where [:= :fetched_at nil]
-                            :order [[:found_at :asc]]
-                            :limit 1
-                            :only :id}])))
+           ["select" "users" {"where" ["=" "fetched_at" nil]
+                              "order" ["found_at" "asc"]
+                              "limit" 1
+                              "only" "id"}])))
 
 (defn- mark-fetch
   "Mark the user as having been fetched for follows."
   [dba user]
   (embedded/query dba
-    [:update :users {:fetched_at (System/currentTimeMillis)}
-                    {:where [:= :id user]}]))
+    ["update" "users" {"fetched_at" (System/currentTimeMillis)}
+                      {"where" ["=" "id" user]}]))
 
 (defn- fetch
   "Fetch data for one user. Ensures that all followed and following users exist
@@ -108,9 +110,8 @@
   "Returns a collection of [from to] vectors corresponding to follow edges
    on the users/follows graph."
   [dba]
-  (embedded/query dba [:select :follows {:only [:from :to]}]))
+  (embedded/query dba ["select" "follows" {"only" ["from" "to"]}]))
 
 (defn ensure-indexes
   [dba]
-  (embedded/query dba [:create-index :users [[:found_at :asc]]])
-  (embedded/query dba [:create-index :follows [[:to :asc]]]))
+  (embedded/query dba ["create-index" "users" "found_at"]))
